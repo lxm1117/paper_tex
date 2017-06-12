@@ -1,0 +1,397 @@
+
+\documentclass[10pt,letterpaper]{article}
+\usepackage[top=0.85in,left=2.75in,footskip=0.75in]{geometry}
+%customized
+\linespread{1.5}
+
+% amsmath and amssymb packages, useful for mathematical formulas and symbols
+\usepackage{amsmath,amssymb}
+
+% Use adjustwidth environment to exceed column width (see example table in text)
+\usepackage{changepage}
+
+% Use Unicode characters when possible
+\usepackage[utf8x]{inputenc}
+
+% textcomp package and marvosym package for additional characters
+\usepackage{textcomp,marvosym}
+
+% cite package, to clean up citations in the main text. Do not remove.
+\usepackage{cite}
+
+% Use nameref to cite supporting information files (see Supporting Information section for more info)
+\usepackage{nameref,hyperref}
+
+% line numbers
+\usepackage[right]{lineno}
+
+% ligatures disabled
+\usepackage{microtype}
+\DisableLigatures[f]{encoding = *, family = * }
+
+% color can be used to apply background shading to table cells only
+\usepackage[table]{xcolor}
+
+% array package and thick rules for tables
+\usepackage{array}
+
+% create "+" rule type for thick vertical lines
+\newcolumntype{+}{!{\vrule width 2pt}}
+
+% create \thickcline for thick horizontal lines of variable length
+\newlength\savedwidth
+\newcommand\thickcline[1]{%
+  \noalign{\global\savedwidth\arrayrulewidth\global\arrayrulewidth 2pt}%
+  \cline{#1}%
+  \noalign{\vskip\arrayrulewidth}%
+  \noalign{\global\arrayrulewidth\savedwidth}%
+}
+
+% \thickhline command for thick horizontal lines that span the table
+\newcommand\thickhline{\noalign{\global\savedwidth\arrayrulewidth\global\arrayrulewidth 2pt}%
+\hline
+\noalign{\global\arrayrulewidth\savedwidth}}
+
+% Remove comment for double spacing
+%\usepackage{setspace} 
+%\doublespacing
+
+% Text layout
+\raggedright
+\setlength{\parindent}{0.5cm}
+\textwidth 5.25in 
+\textheight 8.75in
+
+% Bold the 'Figure #' in the caption and separate it from the title/caption with a period
+% Captions will be left justified
+\usepackage[aboveskip=1pt,labelfont=bf,labelsep=period,justification=raggedright,singlelinecheck=off]{caption}
+\renewcommand{\figurename}{Fig}
+
+% Use the PLoS provided BiBTeX style
+\bibliographystyle{plos2015}
+
+% Remove brackets from numbering in List of References
+\makeatletter
+\renewcommand{\@biblabel}[1]{\quad#1.}
+\makeatother
+
+% Leave date blank
+\date{}
+
+% Header and Footer with logo
+\usepackage{lastpage,fancyhdr,graphicx}
+\usepackage{epstopdf}
+\pagestyle{myheadings}
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\headheight}{27.023pt}
+\lhead{\includegraphics[width=2.0in]{PLOS-submission.eps}}
+\rfoot{\thepage/\pageref{LastPage}}
+\renewcommand{\footrule}{\hrule height 2pt \vspace{2mm}}
+\fancyheadoffset[L]{2.25in}
+\fancyfootoffset[L]{2.25in}
+\lfoot{\sf PLOS}
+
+%units
+\usepackage{siunitx}
+\DeclareSIUnit\Molar{\textsc{m}}
+\sisetup{scientific-notation = true}
+%% Include all macros below
+
+\newcommand{\lorem}{{\bf LOREM}}
+\newcommand{\ipsum}{{\bf IPSUM}}
+
+%% END MACROS SECTION
+
+
+\begin{document}
+\vspace*{0.2in}
+
+% Title must be 250 characters or less.
+\begin{flushleft}
+{\Large
+\textbf\newline{Simulating detailed Ca\textsuperscript{2+}-calmodulin-CaMKII network in a new way: biophysical attributes that affect CaMKII activation pattern} % Please use "sentence case" for title and headings (capitalize only the first word in a title (or heading), the first word in a subtitle (or subheading), and any proper nouns).
+}
+\newline
+% Insert author names, affiliations and corresponding author email (do not include titles, positions, or degrees).
+\\
+Ximing Li\textsuperscript{1},
+William Holmes\textsuperscript{1}
+\\
+\bigskip
+\textbf{1} Department of Biological Sciences, Neuroscience Program, Ohio University, Athens, Ohio, United States of America
+\\
+\bigskip
+
+% Insert additional author notes using the symbols described below. Insert symbol callouts after author names as necessary.
+% 
+% Remove or comment out the author notes below if they aren't used.
+%
+% Current address notes
+%å\textcurrency Current Address: Dept/Program/Center, Institution Name, City, State, Country % change symbol to "\textcurrency a" if more than one current address note
+% \textcurrency b Insert second current address 
+% \textcurrency c Insert third current address
+
+% Deceased author note
+%\dag Deceased
+
+% % Group/Consortium Author Note
+% \textpilcrow Membership list can be found in the Acknowledgments section.
+
+% % Use the asterisk to denote corresponding authorship and provide email address in note below.
+% * correspondingauthor@institute.edu
+\end{flushleft}
+% Please keep the abstract below 300 words
+\section*{Abstract}
+Calcium/calmodulin-dependent protein kinase II (CaMKII) holoenzymes play a critical role in decoding Ca\textsuperscript{2+} signals in neurons and understanding how this occurs has been the focus of many modeling studies. However, CaMKII is notoriously difficult to model and simulate in detail because of its multi-subunit nature and complex activation kinetics. To study the Ca\textsuperscript{2+}-calmodulin-CaMKII reaction network with detailed kinetics while including the effect of diffusion, we have customized an existing stochastic particle-based simulator Smoldyn to manage the problem of combinatorial explosion of the number of species. With this new method, spatial and temporal aspects of the signaling network can be studied without compromising biochemical details. We used this new method to examine how calmodulin molecules, both partially loaded and fully loaded with Ca\textsuperscript{2+}, choose pathways to interact with and activate CaMKII under various Ca\textsuperscript{2+} input conditions. We found that the frequency dependence of the CaMKII phosphorylation with Ca\textsuperscript{2+} input is not primarily determined by subunit number, but is intrinsic to the network and can be modulated by the relative amount of Ca\textsuperscript{2+} to calmodulin and by the rate of Ca\textsuperscript{2+} diffusion. Depending on whether Ca\textsuperscript{2+} input is saturating or not, calmodulin molecules could choose different routes within the network to activate CaMKII subunits, resulting in different frequency dependence patterns. The findings suggest that particular intracellular environmental factors such as crowding and calmodulin availability can play an important role in decoding Ca\textsuperscript{2+} signals and can give rise to distinct CaMKII activation patterns in dendritic spines, Ca2+ channel nanodomains and cytoplasm.
+% Please keep the Author Summary between 150 and 200 words
+% Use first person. PLOS ONE authors please skip this step. 
+% Author Summary not valid for PLOS ONE submissions.   
+\section*{Author summary}
+
+Ca\textsuperscript{2+} signals are commonly used by cells for various types of activities. In neurons, Ca\textsuperscript{2+} can regulate gene expression and dendritic spine enlargement, strengthen synaptic connectivity, and promote neural growth or even death. These strikingly contrasting cell processes are possible because Ca\textsuperscript{2+} signals of varying strengths and temporal patterns are interpreted differently by intracellular signaling pathways. In our study, we focus on one particular pathway that involves calmodulin and Calcium/calmodulin-dependent protein kinase II (CaMKII). We have developed a new computational method that gets around the problem of combinatorial explosion inherent with modeling this pathway in biophysical detail, and this allows us to model this pathway more realistically than conventional methods. Experiments have shown that CaMKII activity is sensitive to Ca\textsuperscript{2+} signal frequency and our models demonstrate how this frequency dependence depends on Ca2+ input conditions, calmodulin availability and the Ca2+ diffusion rate.
+
+\linenumbers
+% Use "Eq" instead of "Equation" for equation citations.
+% Camkii binding with F-actin is mostly reported in spines studies, but also seen in cytoplasm as Li Boxing 2016
+%Bhalla's paper CaMKII model with diffusion, but simplified CaM states;
+% setup with spine geometry; camca4 only; no diffusion effect; stochastic? hybrid? deterministic
+\section*{Introduction}
+Calcium/calmodulin-dependent protein kinase II (CaMKII) is an important enzyme widely distributed in the central nervous system and other tissues including cardiac muscles~\cite{Wayman:2008gla,Lisman:2002ki,Erickson:2014fs}. CaMKII is involved in intracellular Ca\textsuperscript{2+} signaling as an effector of the Ca\textsuperscript{2+} sensor protein calmodulin (CaM)~\cite{Herring:2016bh,Hell:2014bd,Coultrap:2012ip}. In neurons, CaMKII molecules are especially involved in long-term potentiation (LTP), which is our best model for the molecular basis of learning and memory~\cite{Bliss:1973jg}. In spines, activated CaMKII molecules interact with postsynaptic density proteins, facilitating actins to reorganize, leading to spine enlargement and upregulation of $alpha$-amino-3-hydroxy-5-methyl-4-isoxazolepropionic acid (AMPA) receptor numbers~\cite{Herring:2016bh}. CaMKII molecules can also phosphorylate AMPA receptors to regulate channel conductance~\cite{Herring:2016bh,Coultrap:2012ip} or form complexes with NMDA receptors~\cite{Hell:2014bd}. In addition to synaptic functions, recent studies~\cite{Ma:2014dr,Li:2016cq} suggest that CaMKII in the soma can act as carriers to shuttle Ca\textsuperscript{2+}-CaM into the nucleus. Ca\textsuperscript{2+}-CaM molecules are then unloaded in the nucleus, participate in the calcium/calmodulin-dependent protein kinase IV (CaMKIV) cascade to activate nuclear transcription factors. Therefore CaMKII molecules play a key role in excitation-transcription coupling. 
+
+The CaMKII molecule is a holoenzyme that consists of 12 subunits. Each subunit contains an association domain allowing the formation of multimers, a regulatory domain with CaM binding sites and phosphorylation sites, and a catalytic domain to act as a kinase. Activities such as CaM binding and auto-phosphorylation result in various subunits states. For example, in the presence of Ca\textsuperscript{2+}-CaM complexes, each subunit can bind a CaM molecule and expose its catalytic domain to phosphorylate the direct neighbor subunit at its Thr286/Thr287 site. Once phosphorylated, the CaM unbinding rate decreases dramatcially, leading to a prolonged activation of the subunit; we say, the CaM molecule is "trapped" by the CaMKII subunit~\cite{Meyer:1992dp}. Even when the CaM molecule unbinds, the CaMKII subunit stays activated, entering an autonomous state. Finally, Thr305/Thr306 can also be phosphorylated. This theronine site overlaps with the CaM binding site and its phosphorylation blocks the binding of CaM molecules. In this case, the subunit becomes "capped". 
+
+Researchers have long been interested in modeling and simulating CaMKII~\cite{Zhabotinsky:2000fp,Holmes:2000uk,Kubota:2001ul,Dupont:2003vq,Bhalla:2004cu,Lucic:2008gt,Zeng:2010bq,Pepke:2010ju,Michalski:2012ds}. However, the structural complexity and multi-state nature of CaMKII present a technical challenge. A major problem is combinatorial explosion~\cite{Stefan:2014gl}. One CaMKII subunit has only a countable number of states to consider, but with 6 or 12 subunits on a holoenzyme, the number of combinations of states for a holoenzyme becomes extremely large. This is a common problem in systems biology since large proteins usually consist of multiple subunits. Software that adopts a rule-based approach such as BioNetGen~\cite{Hlavacek:2006iq} can be used to expand the network based on a set of given reaction rules. But for CaMKII holoenzyme, using BioNetGen to generate the network is still computationally intensive. After expansion with BioNetGen, a 6-subunit holoenzyme with four states for each subunit contains 700 unique species and 12192 unique reactions. The size of the network grows substantially when more detailed kinetics are involved. For example, each CaM has 4 Ca\textsuperscript{2+}-binding sites, giving rise to 9 distinct binding states; each state has its own distinct kinetics to interact with a CaMKII subunit. Then each CaMKII subunit exhibits a distinct phosphorylation rate depending on the state of CaM being bound. For simplicity, consider a 6-subunit CaMKII holoenzyme. Each subunit would potentially have 20 states. Then for the holoenzyme, the total number of unique species reaches over $\frac{6^{20}}{6}=609.36\times10^{12}$. It would be extremely time-consuming and not practical for BioNetGen to generate this network. To overcome this problem, most previous modeling studies of CaMKII simplified the Ca\textsuperscript{2+}-CaM-CaMKII reaction network by either modeling CaMKII as monomers~\cite{Bhalla:2004cu,Pepke:2010ju} or allowing only CaM fully-loaded with Ca\textsuperscript{2+} to interact with CaMKII subunits~\cite{Zhabotinsky:2000fp,Kubota:2001ul,Dupont:2003vq,Michalski:2012ds}.
+
+Another complication is related to the intracellular environment. Conventionally, biochemical reactions are modeled in a deterministic manner using Ordinary Differential Equations (ODE). The underlying assumptions are that reactions occur in a spatially homogenous environment, reactants are abundant and not subject to stochasticity, and molecules diffuse sufficiently fast. The majority of previous modeling studies belong to this category except for a few that are stochastic or hybrid models ~\cite{Bhalla:2004cu, Zeng:2010bq, Holmes:2000uk}. However, intracellular space is highly heterogeneous and compartmentalized~\cite{LubyPhelps:2000uj,Dix:2008gy}. Reactions are often restricted to a small space. Structures such as the cytoskeleton, scaffold proteins or endoplasmic reticulum often act as diffusion barriers to slow down molecules. In addition, most previous modeling studies focus on the dendritic spine, where NMDA receptors-channels are the main Ca\textsuperscript{2+} providers. 
+
+In the present work, we focuse on the soma where voltage-dependent Ca\textsuperscript{2+} channels (CaV) provide the Ca\textsuperscript{2+} influx, which servers for our future study on modeling Ca\textsuperscript{2+}-CaM transportation from surface to the nucleus. Specifically, we examined the Ca\textsuperscript{2+}-CaM-CaMKII network activities near L-type Ca\textsuperscript{2+} channels. This is an area less studied previous models, but nonetheless plays a critical role in excitation-transcription coupling~\cite{Ma:2015bg,Li:2016cq}. To study this Ca\textsuperscript{2+}-CaM-CaMKII signaling network and deal with the problem of combinatorial explosion, we modified the published and freely available simulator Smoldyn~\cite{Andrews:2004fs}. Smoldyn is a particle-based stochastic simulator and has been used for simulating reaction and diffusion processes in cells. It works well for relatively simple reaction networks but not for holoenzymes such as CaMKII. We added new data structures to describe the reaction network in a compact way. CaMKII holoenzymes are modeled as a collection of subunits. Each subunit has a set of binding sites. Subunits react independently and diffuse collectively. Reactions are defined between binding sites. The reaction network is stored in a hashtable to allow for lookup during simulations only when reactants collide, without expanding and loading a complete network. We tested and verified these modifications by modeling a Ca\textsuperscript{2+}-CaM interaction network and comparing results with COPASI~\cite{Hoops:2006gy}. Moreover, we added detailed components to the network and examined the frequency dependence of CaMKII activation. We found that the number of subunits does not play a significant role in CaMKII activation. Instead, slow diffusion of Ca\textsuperscript{2+} can dramatically boost CaMKII activation. In the presence of a limited number of CaM molecules, CaM must make an intricate choice between binding Ca\textsuperscript{2+} first or a CaMKII subunit first. Interestingly, a change in the decision pattern leads to an altered frequency dependence of the network. 
+
+
+% % Results and Discussion can be combined.
+\section*{Results}
+\subsection*{Testing of the simulator modifications}
+We first tested the modifications to Smoldyn used in this paper (see Methods) using a Ca\textsuperscript{2+}-CaM network (Fig~\ref{fig1}A). The 4 Ca\textsuperscript{2+} binding sites on CaM gives rise to a total of 9 different binding states of a CaM molecule. For the reaction volume we use a $500\times500\times500$ \SI{}{\cubic\nm} cube with all sides being reflective. The size of this volume mimics that of a Ca\textsuperscript{2+} channel nanodomain or a small dendritic spine head. Initially, the cube contains 3000 Ca\textsuperscript{2+} ions and 700 apoCaM molecules, equivalent to \SI{39.8671}{\micro\Molar} and \SI{9.3023}{\micro\Molar} respectively. The concentrations are chosen to produce an observable amount of 4-Ca\textsuperscript{2+} bound CaM at the steady state. All molecules are initially uniformly distributed. We tested reactions using two different Ca\textsuperscript{2+} diffusion constants \SI{0.0000022}{\square\cm\per\s}~\cite{Keller:2008ez} and half of this value \SI{0.0000011}{\square\cm\per\s}.
+
+We first characterized the reactions in the network to see if results of our stochastic model could reasonably be compared to results with standard ODE methods. A second order chemical reaction in the solvent phase consists of two steps: molecules encountering each other by diffusion followed by the molecules reacting with each other. If the encountering step takes a much longer time to occur than the reacting step, the reaction is diffusion-limited; otherwise, the reaction is activation-limited. Conventionally, an experimentally measured binding kinetic rate, $k_{on}$, can be decomposed into an encounter rate, $k_{enc}$, and an intrinsic activation rate, $k_{a}$, using the following equation~\cite{},
+\begin{equation}\frac{1}{k_{on}}=\frac{1}{k_{enc}}+\frac{1}{k_a}\end{equation}
+For diffusion-limited reactions, $k_a \gg k_{on}$ and $k_{on} \approx k_{enc}$; for activation-limited reactions, $k_a \approx \k_{on}$ as diffusion is sufficiently fast. Given the diffusion coefficients for Ca\textsuperscript{2+} and calmodulin and the parameter values for Ca\textsuperscript{2+} and calmodutlin reaction kinetics in Table 1., we calculated the $\frac{k_a}{k_{on}}$ ratios and concluded that the reactions in the network belong to the activation-limited regime. This was also true if diffusion constants were reduced 10 fold. ? Thus this simple model resembles a well-mixed system and a standard ODE model will provide a good test standard. 
+
+We coded a deterministic ODE system in COPASI~\cite{} and compared results with our stochastic model using the same kinetics. We found that the stochastic model and the ODE COPASI model exhibited similar time courses for all CaM binding state species as show in Fig~\ref{2}. Slowing down Ca\textsuperscript{2+} diffusion did not significantly alter the time courses for the parameter values used. These results suggest that our modifications of Smoldyn are working properly. 
+
+\begin{figure}[!h]
+	\caption{{\bf}
+	A: In this example, N1 and N2 are the two sites of N-lobe; C1 and C2 are the two sites of C-lobe. The binding and unbinding rate constants are labeled at the end of reactions. Between lobes reactions are independent. Within each lobe bindings are cooperative. Thus N2 binding cannot happen without N1 being bound; a similar rule applies to C sites. ‘+’ represents a binding reaction; ‘~’ represents molecules that are bound. ‘{}’ on the left-hand side specifies the binding sites states of reactants or the conditions for a reaction to occur. On the right-hand side, binding sites involved in the reaction are assigned to new values to change state. Notice the ‘==‘ sign on the left-hand side, and the ‘=‘ sign on the right-hand side are different. The ‘==‘ represents True or False of equality, whereas the ‘=‘ denotes an assigning operation. B: Ca\textsuperscript{2+} and CaM interactions, resulting in 9 different states of CaM. Arrows represent the direction of binding reactions. C: The complete Ca\textsuperscript{2+}-CaM-CaMKII network. The layer in blue represents Ca\textsuperscript{2+}-CaM interactions the same as in figure B. Edges are labeled to indicate binding reactions. For example, N1 means binding of a Ca\textsuperscript{2+} ion on CaM N1 site. KN1 means CaM attached to a CaMKII subunit binds a Ca\textsuperscript{2+} ion on N1 site. KNxCy means CaMKII subunit binds a CaM has $x$ Ca\textsuperscript{2+} ions bound on N-lobe and $y$ Ca2+ on C-lobe, $x$ and $y$ are from 0 to 2. KpNxCy means phosphorylated CaMKII subunit binds a CaM. Red edges mark the preferred pathway. D: Reaction scheme1. From top to bottom, the blue edges represent autophosphorylations of CaM N0C2, N1C2 and N2C2 respectively. The layer colored yellow represents Ca\textsuperscript{2+}-CaM interactions, the same as in panel B. E. Reaction scheme22. From left to right, the blue edges represent autophosphorylations of CaM N2C0, N2C1 and N2C2 respectively. The front layer(Layer2) colored yellow represents interactions between Ca\textsuperscript{2+} and CaMKII attached CaM molecules. Layer3 represents interactions between Ca\textsuperscript{2+} and phosphorylated CaMKII attached CaM molecules.}
+\label{fig1}
+\end{figure}
+
+\begin{figure}[!h]
+	\caption{{\bf}
+	Time courses of 9 states of CaM molecules. The smooth lines are simulated using COPASI, and the discontinous lines are from the simple stochastic models with two different diffusion coefficients.}
+\label{fig2}
+\end{figure}
+
+\subsection*{Analysis of the Ca\textsuperscript{2+}-CaM-CaMKII network}
+
+We set up a prototype model to identify the major network branches that contribute to the phosphorylation of CaMKII subunits. The prototype model comprises Ca\textsuperscript{2+}-CaM-CaMKII interactions as shown in Fig~\ref{fig1}. In this network diagram molecule species are represented as vertices and reactions are represented as the network edges. CaM molecules and CaMKII holoenzymes with two 6-subunit rings were initially uniformly distributed in the $1 \times 1 \times 2$\SI{}{\cubic\um} box. As an initial contion, the box contains 6020 apoCaM molecules (\SI{5}{\micro\Molar}) and 12036 CaMKII subunits (\SI{10}{\micro\Molar}), within which 200 CaM molecules are bound to CaMKII. The initial state is at an equilibrium, which we intentionally computed by running 5 simulation trials starting with the same numbers of CaM and CaMKII molecules (Fig~\ref{fig}). Ca\textsuperscript{2+} ions were released as a single source from the top $1 \times 1$ \SI{}{\square\um}. A previously generated input file having a total of 6 Ca2+ bursts delivered at 5 Hz was used to provide Ca\textsuperscript{2+} influx during the simulation (see Methods). We ran the simulation up to \SI{2.5}{\s}, recorded the molecule numbers at every \SI{1}{\ms} and logged all reaction events. Using the events log, we counted the accumulated occurrences of each reaction type at every \SI{10}{\ms}, starting from the initial steady-state until the Ca\textsuperscript{2+} bursts were over.
+
+For a particular reaction, the number of occurrences during a time span is considered to be the net number of molecule state changes along the corresponding edge, i.e., the number of unbinding events is subtracted from the number of binding events. A negative number means that unbinding occurs more often than binding within the given time span. 
+
+We analyzed the edges in the Ca\textsuperscript{2+}-CaM-CaMKII network (Fig~\ref{}). The network consists of three layers (Fig~\ref{}). The back layer (Layer1) describes interactions between Ca\textsuperscript{2+} and the 9 states of CaM (NxCy, x,y=0,1,2) as shown separately in Fig~\ref{}. The front layer (Layer2) is for reactions of Ca\textsuperscript{2+} with CaM attached to unphosphorylated CaMKII (KNxCy). The middle layer (Layer3) is for reactions of Ca\textsuperscript{2+} with CaM attached to phosphorylated CaMKII (KpNxCy). Starting in Layer1, there are at most 4 possible ways for each CaM species to change state: binding a Ca\textsuperscript{2+} at a C site, binding Ca\textsuperscript{2+} at an N site, binding to an unphosphorylated CaMKII subunit or binding to a phosphorylated CaMKII subunit. However, binding to a phosphorylated CaMKII subunit requires a bound subunit to be phosphorylated first and then lose the bound CaM. This type of reaction rarely occurs during the early stage of the simulation since phosphorylation is slow and CaM unbinding from a phosphorylated subunit is uncommon. Thus we focus on the first 3 types of reactions.
+
+\begin{figure}[!h]
+	\caption{{\bf}
+	Accumulated reaction occurrences over time for nine states of CaM molecules. For each type of CaM, three types of reactions can occur: binding of Ca\textsuperscript{2+} at N site, at C site or binding a CaMKII subunit. N1 represents Ca\textsuperscript{2+} binding on the N1 site; N2 means Ca\textsuperscript{2+} binding on the N2 site; C1 means Ca\textsuperscript{2+} binding on the C1 site; C2 means Ca\textsuperscript{2+} binding on the C2 site; K-NxCy means binding between CaMKII and CaM NxCy. Green arrows indicate the path consists of most likely chosen reactions starting from N0C0. Following the green arrows, labeled reaction leads to constructing the predominant pathway.}
+\label{fig3}
+\end{figure}
+***
+For each CaM state, we counted the accumulated occurrences of the possible reaction types. Results are shown in Fig~\ref{}. The plot reveals a predominant pathway for CaM and CaMKII state transitions. Starting as apoCaM, a CaM molecule tends to bind a Ca\textsuperscript{2+} ion on the C1 site and then on the C2 site, entering the N0C2 state. CaM in the N0C2 state has a strong preference to enter layer 2 by binding to a CaMKII subunit, after which it quickly binds Ca\textsuperscript{2+} ions to the N1 and N2 sites to become KN2C2 Fig~\ref{}. [Also evident from Fig~\ref{} is that once CaM has two Ca\textsuperscript{2+} ions on either lobe, the preference is to bind to a CaMKII subunit before binding additional Ca\textsuperscript{2+} ions. Once bound to a CaMKII subunit, additional Ca\textsuperscript{2+} ions bind to CaM more quickly. ?] In this scenario, it is rare for CaM to become fully bound with Ca\textsuperscript{2+} ions prior to binding with a CaMKII subunit. Nevertheless, phosphorylation of CaMKII subunits occurs most often when subunits are bound with fully loaded CaM, but still often with CaM having C sites loaded, KN0C2 and KN1C2, as shown in Fig~\ref{}. This preferred pathway is consistent with a hypothetical major pathway that leads to CaMKII autophosphorylation shown in Pepke et al.~\cite{Pepke:2010ju}. The observation is also consistent with ~\cite{} in showing that partially loaded CaM molecules may be very important in activating CaMKII subunits. We note that the way the predominant pathway is chosen at each vertex is a consequence of reaction affinities. For example, even though N sites bind Ca\textsuperscrtip{2+} faster, the C sites have higher affinity making Ca\textsuperscript{2+} binding to C sites preferred. 
+
+To confirm the critical role of NxC2 (x=0,1,2) CaM in activation and phosphorylation of CaMKII, we set up two modified reaction schemes (Fig~\ref{}). In Scheme1, only CaMKII subunits bound with NxC2 are allowed to become phosphorylated. In Scheme2, phosphorylation is allowed only for subunits bound with N2Cx. In particular, the phosphorylation rates in the two schemes are equivalent, i.e., $k_{on}$ of reaction KpN2C0_rxn is the same as that of KpN0C2_rxn, and the $k_{on}$ of KN2C1_rxn equals that of KN1C2_rxn. Not surprisingly, the two schemes give rise to different phosphorylation levels as shown in Fig~\ref{}. Scheme 1 performs slightly worse than the whole network, whereas Scheme 2 produces much lower phosphorylation levels. Therefore, edges of the network are not equally involved in CaMKII phosphorylation. Phosphorylation from KNxC2 is especially important.  
+
+\begin{comment}
+\subsection*{CaMKII activation frequency dependence is not primarily determined by CaMKII holoenzyme structures}
+
+A classic experiment by DeKonick and Schulman~\cite{DeKoninck:1998wh} showed that \textit{in vitro} CaMKII holoenzymes activation are sensitive to the frequency of Ca\textsuperscript{2+}-CaM pulses. A recent study \textit{in vivo} also noticed glutate uncaging frequency affects CaMKII activation in spine~\cite{Fujii:2013bg}. It has been hypothesized that the holoenzyme structure requires cooperative phosphorylation between neighboring subunits and thus the structure contributes to the observed frequency dependence. However several other studies~\cite{Kubota:2001ul,Pepke:2010ju,Michalski:2012ds} suggest that the number of subunits of a holoenzyme does not result in significant difference in CaMKII activation pattern, therefore should not be related to the frequency dependence. Since multi-subunit CaMKII has not been modeled in fine details, we used the customized simulator to test the effects of subunits number by varying the number from 2, 6 to 12. For each subunit number, we used 5 Hz and 10 Hz Ca\textsuperscript{2+} input and simulated 10 trials for each frequency. The Ca\textsuperscript{2+} input files are generated from a 5 Hz and a 10 Hz theta-burst voltage file respectively, simulated using a stochastic Ca\textsuperscript{2+} channel model as described in Methods. 
+%In particular, 40 trials of Ca\textsuperscript{2+} input files were generated for each voltage file and matched by total Ca\textsuperscript{2+} ions. The total Ca\textsuperscript{2+} amount difference between matched files is less than 10 Ca\textsuperscript{2+} ions. 
+
+For a given subunit number, we consistently observed significantly higher phosphorylation level with 10 Hz than 5 Hz (Fig~\ref{fig4}B,C). Typically, 10 Hz input allows more accumulation of NxC2 type CaM, leading to more bound CaMKII subunits and thus more phosphorylations (Fig~\ref{fig4}A). The number of subunits affects the phosphorylation level but does not significantly contribute to the observed frequency effect(Fig~\ref{fig4}C). Specifically, the 2-subunits condition makes it easier for a holoenzyme to propagate phosphorylation between neighbors, thus resulting in the highest phosphorylation level under 10 Hz and 5 Hz. However, the fewer-subunits-easier-propagation advantage is not consistent between the 6-subunits and 12-subunits conditions.% The 6-subunits condition results in a higher phosphorylation level than the 12-subunits condition under 10 Hz but not consistently so under 5 Hz. 
+
+\begin{figure}[!h]
+	\caption{{\bf}
+	A: Time courses of CaMKII subunits and CaM molecules when given 5 Hz Ca\textsuperscript{2+} influx generated from 16 channels. ‘camkii\_b’ means CaM bound CaMKII subunits. ‘camkii\_p’ means phosphorylated CaMKII subunits. ‘KN2C2 + KpNxC2’ represents CaM molecules bound to either CaMKII or phosphorylated CaMKII and are fully Ca\textsuperscript{2+} loaded on C sites. B: Time courses of phosphorylated CaMKII subunits for 10 Hz (smooth lines) and 5 Hz input (dashed lines) with the complete network, reaction scheme1 and reaction scheme2 respectively. C: Time courses of phosphorylated CaMKII subunits for 10 Hz(fast rising) and 5 Hz input (slow rising) when one holoenzyme contains 2, 6 and 12 subunits respectively. D: With 5 Hz input, time courses of molecule number for subunits that are activated themselves (bound or phosphorylated) and together their neighbors. E: The same as in D except that 10 Hz input is used.}
+\label{fig4}
+\end{figure}
+\end{comment}
+
+\subsection*{CaMKII activation frequency dependence and the detailed Ca2+-CaM-CaMKII network mechanisms invovled}
+
+A classic experiment by DeKonick and Schulman~\cite{DeKoninck:1998wh} showed that \textit{in vitro} CaMKII holoenzymes activation are sensitive to the frequency of Ca\textsuperscript{2+}-CaM pulses. A recent study \textit{in vivo} also noticed glutamate uncaging frequency affects CaMKII activation in spine~\cite{Fujii:2013bg}. Numerous modeling studies have also reported a dependence of CaMKII activation on the frequency of calcium signals~\cite{}. To confirm this CaMKII activation pattern, we tested our 6-subunit CaMKII model using the previously generated 10 Hz and 5 Hz Ca\textsuperscript{2+} influx files (see Methods). The total number of influx Ca\textsuperscript{2+} ions are comparable (40433 ions in 5 Hz vs 40435 ions in 10 Hz). For each frequency, we simulated 10 trials and presented the time-varying mean +/- standard deviation of phosphorylated subunits. As shown in Fig~\ref{fig}, we observed significantly higher phosphorylation levels with 10 Hz than with 5 Hz input.
+
+The observed frequency preference for 10 Hz is inherent to the Ca\textsuperscript{2+}-CaM-CaMKII binding. Through examining the reaction occurrences over time, we noticed that the 10 Hz input results in more bindings between NxC2 CaM and CaMKII, and consequently more autophosphorylations (Fig~\ref{}). Furthermore, the frequency effect can be modulated by slowing down Ca\textsuperscript{2+} diffusion and limiting the total amount of CaM. In the presence of moderate amount of Ca\textsuperscript{2+}, CaM molecules follow the predominant pathway by choosing reaction paths according to affinities. As a result, CaMKII interactions with CaM and Ca\textsuperscript{2+} binding to CaM are relatively independent. In contrast, when Ca\textsuperscript{2+} influx becomes saturating, the flush of Ca\textsuperscript{2+} quickly takes up the CaM, leaving CaMKII temporarily lack of binding partners. This temporary shortage of CaM results in an alternative pathway decision and ultimately a suboptimal phosphorylation level. Given the same total amount of Ca\textsuperscript{2+}, 10 Hz is easier to saturate CaM in a short time than 5 Hz. To demonstrate the effect of saturating Ca\textsuperscript{2+}, we increased the Ca\textsuperscript{2+} channel number from 16 channels as in the prototype model to allow more Ca\textsuperscript{2+} ions to flow in per action potential (Fig~\ref{fig5}). In the mean time, the total Ca\textsuperscript{2+} influx is kept consistent for 5 Hz and 10 Hz. As Ca\textsuperscript{2+} level increases, the network produces more phosphorylated CaMKII subunits, and the phosphorylation level difference between 5 Hz and 10 Hz conditions diminishes. Eventually, the 10 Hz input becomes saturating and the network generates less phosphorylation under 10 Hz than the 5 Hz stimulus (Fig~\ref{fig5}F). 
+
+\begin{figure}[!h]
+	\caption{{\bf}
+	A: Using Ca\textsuperscript{2+} input generated with double times Ca2+\textsuperscript{2+} amount, accumulated reaction occurrences for autophosphorylation of CaMKII bound with N0C2, N1C2 and N2C2 respectively. Thick lines are for 10 Hz input; thin lines are for 5 Hz. B-E: The same as in A with Ca\textsuperscript{2+} input generated with $3\times$. $3.5\times$, $4\times$ and $6\times$ channels respectively. F: Summary plot of phosphorylation level with 10 Hz and 5 Hz input when various numbers of Ca\textsuperscript{2+} channels are involved in Ca\textsuperscript{2+} influx generation.}
+\label{fig5}
+\end{figure}
+
+We examined the reaction occurrences profile over time on Layer1 edges (Fig~\ref{fig6}) and noticed that the reaction pathway choice deviates from the predominant pathway when Ca\textsuperscript{2+} level becomes saturating. This trend can be revealed from the pathway choice for CaM N0C2 (Fig~\ref{fig6}A-C). At nonsaturating Ca\textsuperscript{2+} level, N0C2 molecules are more likely to bind with CaMKII (reaction KN0C2) than binding a Ca\textsuperscript{2+} ion on the N1 site (reaction N1). When Ca\textsuperscript{2+} becomes saturating, N0C2 molecules tends to choose N1 binding over reaction KN0C2. This switch of reaction choice is observed for 10 Hz but not for 5 Hz. Likewise, we analyzed the profile of all possible CaMKII-CaM binding reactions. For 5 Hz conditions, binding of N0C2 consistently dominates over other CaMKII-CaM binding reactions, regardless of the amount of Ca\textsuperscript{2+} influx (Fig~\ref{fig6}D-F). However for 10 Hz, as Ca\textsuperscript{2+} influx increases, binding of N2C2 (reaction KN2C2) gradually replaces binding of N0C2 (reaction KN0C2) and becomes the dominant choice for CaM to enter Layer2 (Fig~\ref{fig6}G-I). In breif, this switch of dominant pathway occurs for 10 Hz, correlating with the suboptimal phosphorylation level observed for 10 Hz.
+
+\begin{figure}[!h]
+	\caption{{\bf}
+	A-C: Reaction occurrences of N0C0 binding Ca\textsuperscript{2+} at the N1 site and reaction occurrences of N0C0 directly binding with CaMKII. Thick lines are for 10 Hz input, and thin lines are for 5 Hz input. D-F: Reaction occurrences for CaMKII binding with all 9 CaM states. 5 Hz input generated with $1\times$, $3\times$ and $6\times$ Ca\textsuperscript{2+} influx are used. N0C2 are the dominant CaM state binding with CaMKII. Colored lines are for frequently occurred reactions. Grey lines are for infrequently occurred reactions. G-I: The same as in D-F except that 10 Hz input are used. 
+	}
+\label{fig6}
+\end{figure}
+
+The saturating Ca\textsuperscript{2+} effects on frequency preference can also be facilitated by slowing Ca\textsuperscript{2+} diffusion and limiting the available CaM in the system (Fig~\ref{fig7}). A slowed Ca\textsuperscript{2+} diffusion allows more interactions between Ca\textsuperscript{2+} and CaM, effectively mimicking a saturating level Ca\textsuperscript{2+}. To demonstrate, we set Ca\textsuperscript{2+} diffusion as \SI{0.0000011}{\square\cm\per\s}, which is half of the default speed and does not change the activation-limited regime of the network. Slow diffusion results in a dramatic increase of CaMKII phosphorylation regardless of Ca\textsuperscript{2+} channels and input frequencies. Also, the frequency preference for 10 Hz is reversed at $3\times$ of $6\times$ Ca\textsuperscript{2+} influx condition(Fig~\ref{fig7}C,D). In other words, with slow diffusion, Ca\textsuperscript{2+} influx provided by $3\times$ becomes sufficiently saturating to change the frequency preference. On the other hand, the same effect can be artificially created by limiting the total amount of CaM in the system (Fig~\ref{fig7}A,B). To demonstrate, we compared simulations using $3.5\times$ Ca\textsuperscript{2+} input with the default amount of CaM (\SI{5}{\micro\Molar}) and limited CaM (\SI{2.5}{\micro\Molar}). Even though the Ca\textsuperscript{2+} amount does not change, by limiting CaM we noticed a reverse of frequency preference from 10 Hz to 5 Hz. It is also worth noting is that by combining slow diffusion and limited CaM, reversing the frequency preference is possible with merely twice amount of Ca\textsuperscript{2+} influx (Fig~\ref{fig7}E,F). 
+
+\begin{figure}[!h]
+	\caption{{\bf}
+	A: Using $3.5\times$ Ca\textsuperscript{2+} input, accumulated reaction occurrences for autophosphorylation of CaMKII bound with N0C2, N1C2 and N2C2 respectively. Thick lines are for 10 Hz input; thin lines are for 5 Hz. B: The same as in panel A except that the total CaM available in the system is decreased to half amount. C: Reaction occurrences using Ca\textsuperscript{2+} input generated with $3\times$ Ca\textsuperscript{2+} input. D: The same as in C except that Ca\textsuperscript{2+} diffusion is slowed  to \SI{0.0000011}{\square\cm\per\s}. E: Reaction occurrences using twice Ca\textsuperscript{2+} input. F: The same as in C except with slowed Ca\textsuperscript{2+} diffusion and half amount of CaM.}
+\label{fig7}
+\end{figure}
+
+\subsection*{CaM changing dominant pathway can be demonstrated using a reduced network }
+
+To better understand what happens during the process, we used a reduced reaction network to capture the observed frequency prefrence reversion (Fig~\ref{fig8}B). The network is derived from the initial steps in the whole Ca\textsuperscript{2+}-CaM-CaMKII network. It is simple enough to be simulated using the original Smoldyn. We used 5 pulses of instantaneous Ca\textsuperscript{2+} release as the input instead of realistic Ca\textsuperscript{2+} influx and varied the amount of Ca\textsuperscript{2+} influx per pulse. The CaMKII molecules are modeled as monomers with a phosphorylation rate of \SI{1}{\per\s}. The 10 Hz stimulus becomes saturating and fails to generates more phosphorylation than 5 Hz when Ca\textsuperscript{2+} amount reaches 40000 ions per pulse. We separated the reduced network into two paths based on the sequence of Ca\textsuperscript{2+}-CaM-CaMKII binding (Fig~\ref{fig8}A). Simulations were carried out using each path alone to compare with the reduced network. When Ca\textsuperscript{2+} amount is not saturating, the reduced network shows a comparable phosphorylation level with that of Path2 (Fig~\ref{fig7}B,C). This pathway choice is consistent with the "follow-the-affinity" principle. Also the phosphorylation level increases linearly with the Ca\textsuperscript{2+} input amount. However when Ca\textsuperscript{2+} becomes saturating, the growth of phosphorylation level with incrasing Ca\textsuperscript{2+} amount slows down for both 10 Hz and 5 Hz (Fig~\ref{fig8}A). But the trend is considerable for 10 Hz and only slight for 5 Hz. Such an effect is mostly contributed from Path2 (Fig~\ref{fig8}B). When Path2 alone is present, the phosphorylation level as function of increasing Ca\textsuperscript{2+} input shows a faster increase for 5 Hz than 10 Hz.
+
+\begin{figure}[!h]
+	\caption{{\bf}
+	A: The reduced reaction network derived from the whole network. CaMKII are modeled as monomers and can undergo phosphorylation at an arbitrary rate \SI{1}{\per\s} as long as bound with a CaM N1C2. B: Summary plot of phosphorylation level by varying Ca\textsuperscript{2+} ions amount per pulse from 10000 ions/pulse to 50000 ions/pulse. Dashed lines represent the slow of phosphorylation level growth as a function of Ca\textsuperscript{2+} influx. C: Summary plot of phosphorylation level with the various amount of Ca\textsuperscript{2+} ions delivered at either 5 Hz or 10 Hz. Phosphorylation levels are generated through Path1 or Path2 alone. D: In the presence of non-saturating Ca\textsuperscript{2+}(ca10000), time courses of N0C2 molecules when Path1 or Path2 alone is present, or both are present. E: The same as in D except that in the presence of saturating Ca\textsuperscript{2+}(ca50000).}
+\label{fig8}
+\end{figure}
+
+The two paths branch from the node N0C2. That is, CaM N0C2 molecules need to make choices for binding parterners. How choices are made depend on the amount of each binding partner. When Ca\textsuperscript{2+} amount is scarce, Path2 dominates; when Ca\textsuperscript{2+} becomes saturating, Path1 competes with Path2. Hence inherently, there is a competition invovled between the two paths, which can alter the time course of N0C2 and eventually the phosphorylation level. To visualize the competition, we compared the time courses of N0C2 in the reduced network and those when Path1 or Path2 are recruited alone. Hypotheticall, when competitions exhist, the N0C2 molecules are in high demand. Hence the consumption of N0C2 increases when both Path1 and Path2 are present. In other words, the amount of N0C2 decreases more than when either Path is present alone. This is indeed the case when we examined the N0C2 amount in nonsaturating (10000 ions per pulse, Fig~\ref{fig8}D) and saturating Ca\textsuperscript{2+} influx (50000 ions per pulse, Fig~\ref{fig8}E). In the nonsaturating case, the time course of N0C2 of the reduced network matches well with that of the Path2 alone condition. N0C2 molecules in Path2 are not affected by the presence of Path 1. In contrast, in the saturating case, N0C2 amount becomes considerably lower when both paths are recruited together than when either path is present alone. This implies that the two paths negatively affect each other. Hence confirms the competition.
+
+\section*{Discussion}
+In the study, we presented an efficient approach to simulate multi-subunit molecules and reaction network in detailed kinetics, as well as the effects of diffusion on the reaction network. We also introduced an intuitive approach to analyzing the pathway choices of a network based on the reaction history of a simulation, allowing us to grasp insights of a large network quickly.
+
+Our findings agree with observations from previous studies. First, under physiological conditions when Ca\textsuperscript{2+} influx is moderate, CaM molecules partially loaded with Ca\textsuperscript{2+} are important for CaMKII activation. In particular, the pathway through N0C1, N0C2, and KN0C2 plays a crucial role. Second, when studying the effects of Ca\textsuperscript{2+} input frequency, we noticed that the number of subunits does not significantly affect the patterns of CaMKII. The mechanism should reside within the network kinetics. These notions are consistent with previous modeling studies ~\cite{Kubota:2001ul,Pepke:2010ju,Michalski:2012ds}. Third, CaM availablility is factor for CaMKII frequency response, as suggested in ~\cite{DeKoninck:1998wh}. Given that free diffusible CaM molecules are limited \textit{in vivo}~\cite{2008BpJ....95.6002S,Persechini:2002tb,LubyPhelps:1995kl}, this conclusion further implies the regulatory role of of many endogenous CaM binding proteins ~\cite{Skene:1990kf}. Fourth, factors such as crowding and spatial homogeneity can slow down molecule diffusion and thus may have substantial effects on CaMKII phosphorylation. In our simulations, Ca\textsuperscript{2+} diffusion slowed down by half could lead to a dramatic increase of phosphorylation level. A similar effect of slow diffusion on CaMKII activation has also been shown in a spine model~\cite{Bhalla:2004cu}. In addition, a recent biophysical study~\cite{2013PNAS..11015794T} suggests that the diffusion of Ca\textsuperscript{2+} ions can be reduced by ten times in a nanodomain around the Ca\textsuperscript{2+} channel mouth. 
+
+%chao etal, autoinhibited through dimerization;
+%stratton etal, subunits exchange 
+Our model does not contain Thr305/Thr306 phosphorylation and some newly discovered mechanisms of CaMKII, which may explain the special multi-subunit strucutre of the holoenzyme. For example, it has been found that there exists a compact autoinhibition state, which occurs through dimerization of adjacent subunits from top and bottom rings. Once Ca\textsuperscript{2+} bound to a dimerized subunit, the dimer dissembles and the two subunits are released. Another recent study indicated that phosphorylated CaMKII subunits can undergo subunits exchange to faciliate proprogating the activation triggered by Ca\textsuperscript{2+}-CaM~\cite{Stratton:2014ct}. 
+
+%Our finding indicates the CaM amount is important for CaMKII frequency dependence. It is known that free diffusible apoCaM molecules are limited in cells~\cite{}. Although there are abundant intracellular CaM molecules, most of them are captured by CaM binding proteins. The distribution of CaM is spatially heterogeneous as well. It is estimated that CaM molecules are enriched upto mM level concentration in areas close to the Ca\textsuperscript{2+} channels~\cite{Mori:2004fb}. These extra details making CaM regulation a complicated process and the output of Ca\textsuperscript{2+} signaling network necessarily depends on the specific biophysical context in which the network is located.
+
+%Our approach to model multi-subunit macromolecules allows binding sites to act independently, therefore potentially different from simply expanding reaction rules and loading the reactions for simulation. A molecule can undergo multiple state changes within a time step as long as the binding sites involved are independent of each other. For example, apoCaM N0C0 can become N1C1 within a time step, since N1 and C1 act independently; but cannot become N0C2 or N2C0, because N2 and C2 act cooperatively on N1 and C1 respectively. But since our time step is sufficiently small, the discrepancy between the implementations stay conceptual and does not lead to different steady states.
+
+One technical challenge for particle-based simulation is to handle diffusion-limited reactions, especially in the presence of high molecule concentrations. One recent experimental study~\cite{Faas:2011fna} estimated that the N sites of CaM are acting very fast to bind Ca\textsuperscript{2+}, much faster than previously cited for CaM-N lobe binding kinetics in modeling studies. These binding kinetics are in the diffusion-limited regime, rendering traditional mass action based methods inaccurate. However for these fast kinetics, there currently lacks an efficient method to simulate. If to simulate with the original Smoldyn algorithm, the simulation time step has to be considerablly reduced to obtain the correct steady state~\cite{Andrews:2015}. Another software package using an enhanced Green's Function Algorithm~\cite{vanZon:2005jd} can handle the high concentration diffusion-limited reactions accurately, but it takes an impractically long time to simulate. It is interesting to examine the Ca\textsuperscript{2+}-CaM-CaMKII using the fast kinetics parameters and we anticipate to address this question in future development.
+
+\section*{Methods}
+\subsection*{Simulator modifications}
+
+We expanded the molecule data structure in Smoldyn to include complexes, molecules and binding sites. A complex may contain multiple molecules and a molecule may contain multiple binding sites. Reactions are specified between binding sites. Each binding site has binary states. For example, bound is coded as 1 and unbound as 0; phosphorylated as 1 and unphosphorylated as 0. Each molecule has a vector to store the states of binding sites. All reactions are stored in a hashtable with reactants and binding states as entry keys. As an example, binding reactions involving the N and C lobes of a CaM molecule can be coded as in Fig~\ref{fig}. CaMKII holoenzymes are two 6-subunits rings. But for simplicity, we modeled each CaMKII holoenzyme as only one ring at a radius of \SI{8}{\nm}. Each subunit is separated from its direct neighbors at a fixed distance \SI{8}{\nm} (estimated from ~\cite{Gaertner:2004jk}) and has a distinct physical location.
+
+In the original version of Smoldyn, each reaction generates new molecules as products and removes reactants. In our case, since one molecule can have multiple binding sites and is potentially associated with multiple partners, entirely removing a molecule is not practical because other attached molecules would also be affected. Also, removing and generating new molecules makes it difficult to track the reaction history of a molecule. Therefore, during reactions we do not remove molecules, but merely change molecule identities and positions. Molecules bound together physically overlap and synchronize their locations automatically. When they diffuse, the diffusion coefficient is determined by the dominant molecule. For example, when Ca\textsuperscript{2+} and CaM are bound, Ca\textsuperscript{2+} molecules diffuse with CaM.
+
+Macromolecules usually have multiple binding sites, and sometimes these sites compete for the same ligand. For example, CaM has 4 Ca\textsuperscript{2+} binding sites. Since the N and C sites act independently, the N1 and C1 sites compete for binding Ca\textsuperscript{2+} and an apoCaM (N0C0) can become either N1C0 or N0C1, resulting in a branching reaction scheme. Thus a decision process is needed to choose a reaction path when a binding event occurs. 
+
+As an example, consider the following two reactions
+\begin{quote}
+\begin{verbatim}
+	rxn1: camN0C0 + ca <-> camN1C0
+	rxn2: camN0C0 + ca <-> camN0C1
+\end{verbatim}
+\end{quote}
+
+Rxn1 has a forward rate constant $k_{f1}$ in \SI{}{\per\micro\Molar\per\s} and a backward rate constant $k_{b1}$ \SI{}{\per\s}. Rxn2 has rate constants $k_{f2}$ and $k_{b2}$. The two reactions can be viewed together as rxn3, which has an overall kinetics $k_{f3}$ and $k_{b3}$. According to the law of mass action, the two reactions can be written in to differential equations and the following equations hold:
+\begin{equation}
+	k_{f3}=k_{f1}+k_{f2}
+\end{equation}
+\begin{equation}\frac{k_{f3}}{k_{b3}}=\frac{k_{f2}}{k_{b2}} + \frac{k_{f1}}{k_{b1}}\end{equation}
+\begin{equation}k_{b3}=pk_{b1} + (1-p)k_{b2}\end{equation}
+
+where $p$ represents the proportion in $k_{b3}$ is due to unbinding of camN1C0. Knowing that $\frac{p}{1-p}=\frac{[camN1C0]}{[camN0C1]}=\frac{k_{f1}/k_{b1}}{k_{f2}/k_{b2}}$, we obtain $k_{f3}=k_{f1}+k_{f2}$. Smoldyn uses binding radii to implement second order reactions. If two molecules are spatially separated by a distance smaller than the corresponding binding radius, then the reaction proceeds. In Smoldyn, a special algorithm is used to calculate the binding radius, which depends on the kinetic rate constant, simulation time step and total diffusion rate of reactants. In case of a branched binding scheme sharing common reactants, we first calculate a binding radius $r_3$ based on $k_{f3}$. If the distance between a molecule pair is smaller than $r_3$, binding happens. To make a reaction choice, we generated a uniformly distributed random number from 0 to 1. If the number falls in the range $(0,\frac{kf_1}{kf_3}]$, then rxn1 is chosen; instead if the number falls in the range $(\frac{kf_1}{kf_3}, 1]$, we pick rxn2. Following this approach, the steady state of the reaction network can be kept consistent with the prediction by the mass action law. 
+
+\subsection*{Reaction network}
+We focus on the interactions among Ca\textsuperscript{2+}, CaM, and CaMKII. We first used a Ca\textsuperscript{2+}-CaM network for testing to confirm that modifications on the simulator are valid. Then we added CaMKII holoenzymes to study the signaling network in detailes (Fig~\ref{fig1}C). Our rule-based approach allows reactions to be described at the binding site level and perform simulations without compromising the resolution of chemical kinetics. We set up a cube-shaped model to represent a chunk from a cell body. The cell is assumed as a sphere with radius \SI{5}{\micro\meter}. The cube has a dimension \SI{1}{\um} in width and \SI{2}{\um} in depth (Fig~\ref{fig9}A). The top surface of the cube is the cell membrane, reflective to all molecules. The four sides are also reflective to prevent molecul1es from escaping laterally through membrane surface of side compartments. The reflective boundary is essentially equivalent to periodic boundary in terms of conservation of molecules in lateral direction. The bottom surface is partially absorbing to Ca\textsuperscript{2+} ions but reflective to CaM. Reflective to CaM guarantees a steady state initial condition. The partial absorption is built-in in Smoldyn to resemble an unbounded diffusion situation~\cite{Andrews:2009dr}.
+
+\begin{figure}[!h]
+	\caption{{\bf}
+	A: Dimension of the cube-shaped model. Ca\textsuperscript{2+} channels are located on the top surface. B: Find the number channels by fitting the single channel current to the GHK equation. N equals 6 by fitting. C: $n_{inf}(v)$ and $\tau_n(v)$ used in the voltage-gated Ca\textsuperscript{2+} channels.}
+\label{fig9}
+\end{figure}
+
+Voltage-gated Ca\textsuperscript{2+} channels (presumably L-type CaL) are located on the top surface to provide Ca\textsuperscript{2+} influx. For simplicity, these channels are clustered at the center of the membrane. The channels open and close depending on a time-varying membrane voltage file generated from a neuron model. CaMKII subunits ($\beta$-subunits) are uniformly present at a concentration of \SI{10}{\umol}. They are also immobilized presumably by attaching to actins~\cite{Li:2016cq}. Free diffusible CaM molecules are uniformly distributed at a concentration of \SI{5}{\micro\Molar}. This is consistent with the notion that at the cell resting level free diffusible CaM is considerably limited~\cite{Tran:2003fs,2008BpJ....95.6002S,LubyPhelps:1995kl}. Table S1 lists all the reactions with corresponding kinetic parameters involved in the network. Kinetic parameters are integrated from various sources and are adjusted to satisfy microscopic reversibility. 
+%However, they are highly concentrated (\SI{245}{\umol}) in the nanodomain attached to Ng molecules. The high concentration of CaM is consistent with the finding~\cite{Mori:2004fb} that L-type Ca\textsuperscript{2+} entry is enriched with CaM. Besides, 
+
+\subsection*{Ca\textsuperscript{2+} input conditions}
+We used a previously built multi-compartment neuron model to generate the somatic action potential trains at frequencies of 5 Hz and 10 Hz~\cite{Li:2014fv}. The action potentials are activated by synaptic stimulations, following a series of presynaptic release of neurotransmitters which was modeled with a probability profile measured in experiments~\cite{Grover:2009hb}. Presynaptic stimulations activate spine AMPA receptors, elevate the membrane potential and open NMDA receptors, allowing Ca\textsuperscript{2+} ions to enter the spines. Accumulated Ca\textsuperscript{2+} influx further depolarizes the dendrite tree and rapidly propagate toward the soma, initiating somatic action potentials. The pattern of action potentials follows the synaptic stimulation. We varied the intervals of synaptic release to generate action potentials in the form of theta-burst with different inter-bursts intervals, which provide different Ca\textsuperscript{2+} influx frequencies for the signaling network.
+
+The cell level neuron model was constructed using NEURON~\cite{Carnevale:2006iv} with a detailed morphology and ion channel conductances. Its membrane voltage output was applied to the Ca\textsuperscript{2+} signaling model (Fig~\ref{fig10}A,C). Since L-type Ca\textsuperscript{2+} channels are relatively fast, the membrane potentials are unaffected by the channel activities, and the neuron model and the signaling model can be safely decoupled. The L-type channels in the signaling model are implemented as single channels with voltage-depdendent stochastic opening and closing. The rates of open and close are functions of membrane voltage and calculated using varialbles of $n$ and $\tau$ (Fig~\ref{fig9}C) similar to Hudgkin-Huxley equations~\cite{Tuckwell:2012tt}.
+
+\begin{quote}
+ \verb|CaL{gate==0} <-> CaL[gate=1]|.
+\end{quote}
+Then the following set of equations are used to decribe voltage-gated Ca\textsuperscript{2+} channels:
+\begin{equation}rate_{open}(V)=\frac{n_{\inf}}{\tau_n}\end{equation}
+\begin{equation}rate_{close}(V)=\frac{1-n_{\inf}}{\tau_n}\end{equation}
+\begin{equation}n_{\inf}=\frac{1}{1+exp(\frac{V+V_{half}}{slope})}\end{equation}
+\begin{equation}\tau_n=\tau_0+\frac{4\tau_a\sqrt{\tau_g(1-\tau_g)}}{exp(-D_V(1-\tau_g)k_f/s)+exp(D_V\tau_gk_f/s)}\end{equation}
+
+The $rate_{open}$ and $rate_{close}$ are used to calculate conditional probabilities to determine the state of a channel for the next time step in the following way
+\begin{equation}P(C|O)=1-exp(-rate_{close}(V)dt)\end{equation}
+\begin{equation}P(O|C)=1-exp(-rate_{open}(V)dt)\end{equation}
+\begin{equation}P(O|O)=1-P(C|O)\end{equation}
+
+For each channel, at a given time, a probability is calculated based on the membrane voltage to decided whether a channel opens. If it opens, a varying number of Ca\textsuperscript{2+} ions are generated. To calculate how many ions, we used the following equation~\cite{2013PNAS..11015794T} to obtain the unitary current for a single channel
+\begin{equation}i_{ca}=-g(V-V_s)\frac{\exp\frac{-(V-V_s)}{RT/zF}}{1-\exp\frac{-(V-V_s)}{RT/zF}}\end{equation}
+where $g$ is chosen as \SI{5}{\pico\siemens} and $RT/zF$ equals \SI{12}{\milli\volt}. A current density is calculated using GHK current equation~\cite{citeulike:306134} assuming an extracellular [Ca\textsuperscript{2+}] of \SI{2}{\m\Molar} and an intracellular concentration of \SI{50}{\nano\Molar}. Since the membrane surface is \SI{1}{\um\square}, the current density is converted to a total current $I_{ghk}$ for the area. Assuming a total number of N channels are present, for each channel $\frac{I_{ghk}}{N}$ should equal $i_{ca}$. By fitting the two expressions, we obtained a N of 16 and a $V_s$ of \SI{-1.90955}{\milli\volt} (Fig~\ref{fig9}B). Using the $i_{ca}$, the number of ions entered during one time step is calcuated as $\frac{i_{ca}}{2e}dt$, where 2 is the valence of Ca\textsuperscript{2+} and $e$ is the elementary charge. To speed up the simulation, Ca\textsuperscript{2+} influx patterns were generated in a separate simulation using the voltage file (Fig~\ref{fig10}B,D). Then the generated Ca\textsuperscript{2+} influx files were fed into the signaling network. To guarantee a consistent amount of total Ca\textsuperscript{2+} for a given set of 5 Hz and 10 Hz voltage files, we generated 40 trials of Ca\textsuperscript{2+} influx files for each frequency and then matched them by total Ca\textsuperscript{2+}.
+
+\begin{figure}[!h]
+	\caption{{\bf}
+	A: A 5 Hz action potential trains voltage file generated from the NEURON model. B: Ca\textsuperscript{2+} influx generated using the 5 Hz action potentials voltage file. Ca\textsuperscript{2+} influx is stochastic. There are spontaneous firings in the absence of action potentials. C: 10 Hz action potential trains voltage file generated from the NEURON model. D: Ca\textsuperscript{2+} influx generated using the 10 Hz action potential file. Accumulated Ca\textsuperscript{2+} influx for 5Hz, 10 Hz, 8 and 16 channels respectively. The total Ca\textsuperscript{2+} amount is matched between Ca\textsuperscript{2+} influx files.}
+\label{fig10}
+\end{figure}
+\section*{Conclusion}
+\section*{Supporting information}
+
+% For figure citations, please use "Fig" instead of "Figure".
+% Place figure captions after the first paragraph in which they are cited.
+
+% % Include only the SI item label in the paragraph heading. Use the \nameref{label} command to cite SI items in the text.
+% \paragraph*{S1 Fig.}
+% \label{S1_Fig}
+% {\bf Bold the title sentence.} Add descriptive text after the title of the item (optional).
+
+% \paragraph*{S1 File.}
+% \label{S1_File}
+% {\bf Lorem ipsum.}  Maecenas convallis mauris sit amet sem ultrices gravida. Etiam eget sapien nibh. Sed ac ipsum eget enim egestas ullamcorper nec euismod ligula. Curabitur fringilla pulvinar lectus consectetur pellentesque.
+
+% \paragraph*{S1 Appendix.}
+% \label{S1_Appendix}
+% {\bf Lorem ipsum.} Maecenas convallis mauris sit amet sem ultrices gravida. Etiam eget sapien nibh. Sed ac ipsum eget enim egestas ullamcorper nec euismod ligula. Curabitur fringilla pulvinar lectus consectetur pellentesque.
+
+\paragraph*{S1 Table.}
+\label{S1_Table}
+{\bf The total amount of Ca\textsuperscript{2+} influx of selected files for 5 Hz and 10 Hz.} 
+\paragraph*{S2 Table.}
+\label{S2_Table}
+{\bf Kinetic parameters of all reactions.}
+\paragraph*{S3 Table.}
+\label{S3_Table}
+{\bf Reaction characterizations.}
+
+\section*{Acknowledgments}
+
+\nolinenumbers
+
+% Either type in your references using
+% \begin{thebibliography}{}
+% \bibitem{}
+% Text
+% \end{thebibliography}
+%
+% or
+%
+% Compile your BiBTeX database using our plos2015.bst
+% style file and paste the contents of your .bbl file
+% here. See http://journals.plos.org/plosone/s/latex for 
+% step-by-step instructions.
+% 
+\bibliography{paper}{}
+
+\end{document}
