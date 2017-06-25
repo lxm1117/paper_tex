@@ -367,21 +367,21 @@ Voltage-gated Ca\textsuperscript{2+} channels (presumably L-type) are located on
 
 \subsection*{Ca\textsuperscript{2+} input conditions}
 
+A neuron model was constructed using NEURON~\cite{Carnevale:2006iv} with a detailed morphology and ion channel conductances. Its membrane voltage output was applied to the Ca\textsuperscript{2+} reaction network model. Since the kinetics of L-type Ca\textsuperscri with detailed morphology of a CA1 pyramidal cell and ion channel conductances to generate a voltage response at the soma to various stimlation conditions. Theta-burst stimulation (5 pulses at 100 Hz, repeated 5 times at 5 Hz or 10 Hz intervals) was applied to synapses on spines taking into account a probability of release measured in experiments~\cite{Grover:2009hb}. This stimulation activated AMPA and NMDA receptor-channels on dendritic spines causing depolarization in the dendritic tree that propagate to the soma and initiated action potentials. Voltage profiles for 5 Hz and 10 Hz intervals stimulations are shown in Fig~\ref{fig15}A,C. 
 
-We used a previously constructed multi-compartment neuron model to generate the somatic action potential trains at frequencies of 5 Hz and 10 Hz~\cite{Li:2014fv}. The action potentials are activated by synaptic stimulations, following a series of presynaptic release of neurotransmitters which was modeled with a probability profile measured in experiments~\cite{Grover:2009hb}. Presynaptic stimulations activate spine AMPA receptors, elevate the membrane potential and open NMDA receptors, allowing Ca\textsuperscript{2+} ions to enter the spines and depolarize the dendrite tree. The depolarization rapidly propagates toward the soma, initiating somatic action potentials. The pattern of action potentials follows the synaptic stimulation. We varied the intervals of synaptic release to generate action potentials in the form of theta-burst with different inter-bursts intervals, which provide different Ca\textsuperscript{2+} influx frequencies for the reaction network (Fig~\ref{fig15}A,C).
 
 \begin{figure}[!h]
 	\caption{{\bf Patterns of membrane voltage and Ca\textsuperscript{2+} influx. }
-	A: A 5 Hz action potential trains voltage file generated from the NEURON model. 
-	B: Ca\textsuperscript{2+} influx generated using the 5 Hz action potentials voltage file. Ca\textsuperscript{2+} influx is stochastic. There are spontaneous influx in the absence of action potentials. 
-	C: 10 Hz action potential trains voltage file generated from the NEURON model. 
+	A: A 5 Hz action potential burst voltage file generated from the NEURON model. 
+	B: Ca\textsuperscript{2+} influx generated using the 5 Hz action potentials voltage file. Ca\textsuperscript{2+} influx is stochastic. There is spontaneous influx in the absence of action potentials. 
+	C: 10 Hz action potential burst voltage file generated from the NEURON model. 
 	D: Ca\textsuperscript{2+} influx generated using the 10 Hz action potential file. 
 	E: Accumulated Ca\textsuperscript{2+} influx for 5Hz, 10 Hz, 8 and 16 channels respectively. The total Ca\textsuperscript{2+} amount is matched between Ca\textsuperscript{2+} influx files.
 	}
 \label{fig15}
 \end{figure}
 
-The neuron model was constructed using NEURON~\cite{Carnevale:2006iv} with a detailed morphology and ion channel conductances. Its membrane voltage output was applied to the Ca\textsuperscript{2+} reaction network model. Since the kinetics of L-type Ca\textsuperscript{2+} channels are relatively fast, the membrane potentials are unaffected by the channel activities. Thus the neuron model and the reaction network model can be safely decoupled. In the reaction network model, the stochastic Ca\textsuperscript{2+} channels open and close in response to the voltage input to provide Ca\textsuperscript influx. The voltage-depdendent opening and closing of these channels are modeled in a Hudgkin-Huxley way~\cite{Tuckwell:2012tt}. The rates of open and close are functions of membrane voltage and calculated using varialbles of $n$ and $\tau_n$, where $n$ describes voltage-dependent activation and $\tau_n$ is the time constant of $n$ (Fig~\ref{fig15}B). The channel obeys a simple first order kinetics as follows.
+This membrane voltage output for neuron model was used to determine Ca\textsuperscript{2+} influx through L-type channels in our reaction network model. Since the kinetics of L-type Ca\textsuperscript{2+} channels are relatively fast and their density is low the membrane potential is not affected by their activities. Thus the neuron model and the reaction network model can be safely decoupled. L-type Ca\textsuperscript{2+} channels are modeled stochastically and they open and close in response to the voltage input to provide Ca\textsuperscript{2+} influx. The voltage-depdendent opening and closing of these channels are modeled with the Hudgkin-Huxley formation~\cite{Tuckwell:2012tt}. The rates of channel opening and closing are functions of membrane voltage and calculated using variables $n$ and $\tau_n$, where $n$ describes voltage-dependent activation and $\tau_n$ is the time constant of $n$ (Fig~\ref{fig16}B). The channel obeys a simple first order kinetics as follows.
 
 \begin{quote}
  \verb|CaL{gate==0} <-> CaL[gate=1]|.
@@ -389,8 +389,8 @@ The neuron model was constructed using NEURON~\cite{Carnevale:2006iv} with a det
 Then the following set of equations are used to decribe voltage-gated Ca\textsuperscript{2+} channels:
 \begin{equation}rate_{open}(V)=\frac{n_{\inf}}{\tau_n}\end{equation}
 \begin{equation}rate_{close}(V)=\frac{1-n_{\inf}}{\tau_n}\end{equation}
-\begin{equation}n_{\inf}=\frac{1}{1+exp(\frac{V+V_{1/2}}{slope})}\end{equation}
-\begin{equation}\tau_n=0.06+3\times\frac{\sqrt{0.45\times0.55}}{exp((V+V_{1/2})\times0.55/slope)+exp(-(V+V_{1/2})\times0.45/slope)}\end{equation}
+\begin{equation}n_{\inf}=\frac{1}{1+exp(-\frac{V-V_{1/2}}{slope})}\end{equation}
+\begin{equation}\tau_n=0.06+4\times\frac{0.75\times\sqrt{0.45\times0.55}}{exp((V-V_{1/2})\times0.55/slope)+exp(-(V-V_{1/2})\times0.45/slope)}\end{equation}
 
 In particular, $n_{\inf}$ is the steady state value of $n$. $V_{1/2}$ and $slope$ together describe the channel activation in response to voltage. In our model, $V_{1/2}$ equals \SI{-15}{\mV} and $slope$ equals 8.0.
 
@@ -399,9 +399,9 @@ The $rate_{open}$ and $rate_{close}$ are used to calculate conditional probabili
 \begin{equation}P(O|C)=1-exp(-rate_{open}(V)dt)\end{equation}
 \begin{equation}P(O|O)=1-P(C|O)\end{equation}
 
-For each channel, at a given time, a probability is calculated based on the membrane voltage to decided whether a channel opens. If it opens, a varying number of Ca\textsuperscript{2+} ions are generated. To calculate how many ions, we used the following equation~\cite{2013PNAS..11015794T} to obtain the unitary current for a single channel
+For each channel, at a given time, a probability is calculated based on the membrane voltage to decide whether a channel opens. If it opens, a varying number of Ca\textsuperscript{2+} ions are generated. To calculate how many ions, we used the following equation~\cite{2013PNAS..11015794T} to obtain the unitary current for a single channel
 \begin{equation}i_{ca}=-g(V-V_s)\frac{\exp\frac{-(V-V_s)}{RT/zF}}{1-\exp\frac{-(V-V_s)}{RT/zF}}\end{equation}
-where $g$ is chosen as \SI{5}{\pico\siemens} and $RT/zF$ equals \SI{12}{\milli\volt}. A current density is calculated using GHK current equation~\cite{citeulike:306134} assuming an extracellular [Ca\textsuperscript{2+}] of \SI{2}{\m\Molar} and an intracellular concentration of \SI{50}{\nano\Molar}. Since the membrane surface is \SI{1}{\um\square}, the current density is converted to a total current $I_{ghk}$ for the area. On the other hand, assuming a total number of N channels are present, for each channel $\frac{I_{ghk}}{N}$ a single channel current is $i_{ca}$. By fitting the total current $I_{ghk}$ and $N\times i_{ca}$, we obtained a N of 16 and a $V_s$ of \SI{-1.90955}{\milli\volt} (Fig~\ref{fig15}C). Using the $i_{ca}$, the number of ions entered during one time step is calcuated as $\frac{i_{ca}}{2e}dt$ (Fig~\ref{15}B,D), where 2 is the valence of Ca\textsuperscript{2+} and $e$ is the elementary charge. In order to guarantee a consistent amount of total Ca\textsuperscript{2+} for a given set of 5 Hz and 10 Hz voltage files, we generated 40 trials of Ca\textsuperscript{2+} influx files for each frequency and then selected the ones with equivalent total Ca\textsuperscript{2+} influx (Fig~\ref{fig15}E).
+where $g$ is chosen as \SI{5}{\pico\siemens} and $RT/zF$ equals \SI{12}{\milli\volt}. A current density is calculated using GHK current equation~\cite{citeulike:306134} assuming an extracellular [Ca\textsuperscript{2+}] of \SI{2}{\m\Molar} and an intracellular concentration of \SI{50}{\nano\Molar}. Since the membrane surface is \SI{1}{\square\um}, the current density is converted to a total current $I_{ghk}$ for the area. On the other hand, assuming a total number of N channels are present, for each channel $\frac{I_{ghk}}{N}$ a single channel current is $i_{ca}$. By fitting the total current $I_{ghk}$ and $N\times i_{ca}$, we obtained a N of 16 and a $V_s$ of \SI{-1.91}{\milli\volt} (Fig~\ref{fig15}C). Using the $i_{ca}$, the number of ions entering one channel during one time step is calcuated as $\frac{i_{ca}}{2e}dt$ (Fig~\ref{15}B,D), where 2 is the valence of Ca\textsuperscript{2+} and $e$ is the elementary charge. In order to guarantee a consistent amount of total Ca\textsuperscript{2+} for a given set of 5 Hz and 10 Hz voltage files, we generated 40 trials of Ca\textsuperscript{2+} influx files for each frequency and then selected the ones with equivalent total Ca\textsuperscript{2+} influx (Fig~\ref{fig15}E).
 
 
 \section*{Conclusion}
